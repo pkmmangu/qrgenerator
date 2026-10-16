@@ -272,35 +272,40 @@
             height: 20px;
             fill: #1e3a5f;
         }
+
         .btn-close {
             display: none;
-            margin-top: 10px;
-            padding: 12px 28px;
-            font-size: 0.95rem;
+            width: 100%;
+            margin-top: 16px;
+            padding: 14px 28px;
+            font-size: 1rem;
             font-weight: 600;
             color: #fff;
             background: linear-gradient(135deg, #ef4444, #b91c1c);
             border: none;
-            border-radius: 40px;
+            border-radius: 60px;
             cursor: pointer;
             transition: background 0.2s, transform 0.15s;
             font-family: inherit;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+            box-shadow: 0 8px 28px rgba(239, 68, 68, 0.35);
+            letter-spacing: 0.5px;
         }
 
         .btn-close.show {
-            display: inline-flex;
+            display: flex;
         }
 
         .btn-close:hover {
             background: linear-gradient(135deg, #dc2626, #991b1b);
-            box-shadow: 0 10px 28px rgba(239, 68, 68, 0.45);
+            box-shadow: 0 12px 36px rgba(239, 68, 68, 0.45);
+            transform: scale(1.01);
         }
 
         .btn-close:active {
-            transform: scale(0.95);
+            transform: scale(0.97);
         }
 
         .btn-close svg {
@@ -311,6 +316,10 @@
 
         .hidden {
             display: none !important;
+        }
+
+        .card.mode-embed {
+            padding: 24px 24px 20px;
         }
 
         @media (max-width: 480px) {
@@ -416,13 +425,15 @@
                 </svg>
                 Download PNG
             </button>
-            <button class="btn-close" id="closeBtn">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-                Tutup
-            </button>
         </div>
+
+        <!-- Tombol Tutup dipindah ke sini (di luar qrWrapper) -->
+        <button class="btn-close" id="closeBtn">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+            Tutup
+        </button>
     </div>
 
     <!-- ===== DEFINISI SYMBOL LOGO ===== -->
@@ -446,6 +457,7 @@
             const clearBtn = document.getElementById('clearBtn');
             const closeBtn = document.getElementById('closeBtn');
             const formGroup = document.querySelector('.form-group');
+            const pageHeader = document.querySelector('.page-header');
 
             let currentCanvas = null;
 
@@ -679,7 +691,11 @@
                     input.value = genValue.trim();
                     toggleClearButton();
 
+                    const card = document.querySelector('.card');
+                    if (card) card.classList.add('mode-embed');
+
                     // Sembunyikan input dan tombol generate
+                    if (pageHeader) pageHeader.classList.add('hidden');
                     if (formGroup) formGroup.classList.add('hidden');
                     generateBtn.classList.add('hidden');
 
