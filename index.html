@@ -689,9 +689,7 @@
                     finalCanvas.height = 512;
                     const ctx = finalCanvas.getContext('2d');
 
-                    // We DO NOT fill with white here to keep PNG transparent
-                    // Removed: ctx.fillStyle = '#ffffff'; ctx.fillRect(...);
-
+                    // Tidak mengisi background putih agar transparan
                     const padding = 40;
                     const qrSize = 512 - (padding * 2);
                     ctx.drawImage(tempCanvas, padding, padding, qrSize, qrSize);
@@ -703,13 +701,13 @@
                         const centerX = padding + qrSize / 2;
                         const centerY = padding + qrSize / 2;
 
-                        // Lingkaran putih (Background Logo)
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fill();
-                        ctx.restore();
+                        // --- LINGKARAN PUTIH DIHAPUS (TRANSPARAN) ---
+                        // ctx.save();
+                        // ctx.beginPath();
+                        // ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+                        // ctx.fillStyle = '#ffffff';
+                        // ctx.fill();
+                        // ctx.restore();
 
                         // Lingkaran gradien
                         const gradientSize = outerSize * 0.80; 
