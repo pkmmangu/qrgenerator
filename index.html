@@ -473,9 +473,6 @@
             function clearInput() {
                 input.value = '';
                 toggleClearButton();
-                // Jika ingin QR otomatis hilang saat clear, panggil generateQR('')
-                // generateQR(''); // <-- uncomment jika ingin otomatis reset QR
-                // Atau biarkan user tekan Generate lagi
                 input.focus();
             }
 
@@ -570,31 +567,32 @@
                     finalCanvas.height = 512;
                     const ctx = finalCanvas.getContext('2d');
 
+                    // 1. TAMBAHKAN BACKGROUND PUTIH UNTUK KESELURUHAN GAMBAR
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
                     const padding = 40;
                     const qrSize = 512 - (padding * 2);
                     ctx.drawImage(tempCanvas, padding, padding, qrSize, qrSize);
 
                     const logoImg = await createLogoImage();
                     if (logoImg) {
-                        const outerSize = qrSize * 0.28;
+                        // 2. PERBESAR UKURAN LINGKARAN PUTIH AGAR BORDER LEBIH TEBAL
+                        const outerSize = qrSize * 0.30; 
                         const outerRadius = outerSize / 2;
                         const centerX = padding + qrSize / 2;
                         const centerY = padding + qrSize / 2;
 
-                        // Lingkaran putih
+                        // Lingkaran putih (Background Logo)
                         ctx.save();
                         ctx.beginPath();
                         ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
                         ctx.fillStyle = '#ffffff';
                         ctx.fill();
-                        ctx.shadowColor = 'rgba(0,0,0,0.1)';
-                        ctx.shadowBlur = 10;
-                        ctx.shadowOffsetX = 0;
-                        ctx.shadowOffsetY = 2;
                         ctx.restore();
 
-                        // Lingkaran gradien
-                        const gradientSize = outerSize * 0.85;
+                        // 3. SESUAIKAN UKURAN LINGKARAN GRADIEN
+                        const gradientSize = outerSize * 0.80; 
                         const gradientRadius = gradientSize / 2;
                         const gradient = ctx.createLinearGradient(
                             centerX - gradientRadius,
@@ -670,7 +668,6 @@
                 }
             });
 
-            // Event untuk toggle clear button
             input.addEventListener('input', toggleClearButton);
             clearBtn.addEventListener('click', clearInput);
 
@@ -681,31 +678,25 @@
                     window.location.href = 'https://pkmmangu.github.io/qrgenerator/';
                 }, 150);
             });
-            // --- AUTO GENERATE DARI URL PARAM ?gen= ---
+            
             window.addEventListener('DOMContentLoaded', function() {
                 const params = new URLSearchParams(window.location.search);
                 const genValue = params.get('gen');
 
                 if (genValue && genValue.trim() !== '') {
-                    // Isi input dengan value dari URL
                     input.value = genValue.trim();
                     toggleClearButton();
 
                     const card = document.querySelector('.card');
                     if (card) card.classList.add('mode-embed');
 
-                    // Sembunyikan input dan tombol generate
                     if (pageHeader) pageHeader.classList.add('hidden');
                     if (formGroup) formGroup.classList.add('hidden');
                     generateBtn.classList.add('hidden');
 
-                    // Tampilkan tombol Tutup
                     closeBtn.classList.add('show');
-
-                    // Langsung generate QR
                     generateQR(genValue.trim());
                 } else if (input.value.trim() !== '') {
-                    // Perilaku default jika ada value di input
                     generateQR(input.value);
                     toggleClearButton();
                 } else {
